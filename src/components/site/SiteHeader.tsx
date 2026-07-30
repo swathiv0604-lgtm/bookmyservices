@@ -50,7 +50,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
+        <nav className="hidden shrink-0 items-center gap-7 lg:flex" aria-label="Primary">
           {navLinks.map((link) => (
             <a
               key={link.href}
