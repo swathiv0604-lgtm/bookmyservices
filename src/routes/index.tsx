@@ -139,27 +139,28 @@ function Home() {
                 minutes. One account for cleaning, repairs, salon, painting, moving and more.
               </p>
 
-              <div className="card-premium mt-8 flex flex-col gap-3 p-3 sm:flex-row sm:items-center">
-                <div className="flex flex-1 items-center gap-2.5 rounded-xl bg-secondary/60 px-3.5 py-3">
+              <div className="card-premium mt-8 grid gap-3 p-3 sm:grid-cols-[1fr_10rem] lg:grid-cols-[1fr_9rem_auto]">
+                <div className="flex min-w-0 items-center gap-2.5 rounded-xl bg-secondary/60 px-3.5 py-3">
                   <Search className="size-4 shrink-0 text-muted-foreground" />
                   <input
                     aria-label="Search for a service"
-                    placeholder="Search AC service, deep cleaning, electrician…"
-                    className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+                    placeholder="Search AC service, deep cleaning…"
+                    className="w-full min-w-0 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
                   />
                 </div>
-                <div className="flex items-center gap-2.5 rounded-xl bg-secondary/60 px-3.5 py-3 sm:w-48">
+                <div className="flex min-w-0 items-center gap-2.5 rounded-xl bg-secondary/60 px-3.5 py-3">
                   <MapPin className="size-4 shrink-0 text-muted-foreground" />
                   <input
                     aria-label="Your location"
                     defaultValue="Bengaluru"
-                    className="w-full bg-transparent text-sm text-foreground outline-none"
+                    className="w-full min-w-0 bg-transparent text-sm text-foreground outline-none"
                   />
                 </div>
-                <Button variant="hero" size="lg" className="sm:px-7">
+                <Button variant="hero" size="lg" className="sm:col-span-2 lg:col-span-1 lg:px-7">
                   Find services
                 </Button>
               </div>
+
 
               <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
                 <span className="inline-flex items-center gap-2">
