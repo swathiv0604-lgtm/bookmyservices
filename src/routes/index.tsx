@@ -1,13 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowRight,
   BadgeCheck,
   CalendarCheck,
   CreditCard,
   Headphones,
-  Heart,
   IndianRupee,
   MapPin,
+  MessageCircle,
   Search,
   Sparkles,
   Star,
@@ -24,7 +25,10 @@ import {
 } from "@/components/ui/accordion";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { categories, faqs, popularServices, testimonials } from "@/components/site/data";
+import { ServiceCard } from "@/components/site/ServiceCard";
+import { allServices, categories, faqs, testimonials } from "@/components/site/data";
+import { openWhatsApp } from "@/lib/whatsapp";
+import { BUSINESS_CONFIG } from "@/config/business";
 import heroImage from "@/assets/hero.jpg";
 import providerImage from "@/assets/provider-cta.jpg";
 
@@ -115,7 +119,37 @@ function Rating({ value, reviews }: { value: number; reviews?: number }) {
   );
 }
 
+const featuredServices = allServices.slice(0, 6);
+
 function Home() {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+  const [location, setLocation] = useState("Bengaluru");
+
+  const matches = query.trim()
+    ? allServices
+        .filter(
+          (s) =>
+            s.title.toLowerCase().includes(query.trim().toLowerCase()) ||
+            s.category.toLowerCase().includes(query.trim().toLowerCase()),
+        )
+        .slice(0, 5)
+    : [];
+
+  const findServices = () => {
+    if (matches.length === 1) {
+      navigate({ to: "/service/$slug", params: { slug: matches[0].slug } });
+      return;
+    }
+    navigate({ to: "/services" });
+  };
+
+  const focusSearch = () => {
+    const el = document.getElementById("search");
+    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+    (el?.querySelector("input") as HTMLInputElement | null)?.focus();
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
@@ -127,7 +161,7 @@ function Home() {
             <div>
               <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-muted-foreground backdrop-blur">
                 <Sparkles className="size-3.5 text-accent" />
-                Now serving Bengaluru, Karnataka
+                Now serving {BUSINESS_CONFIG.city}
               </span>
 
               <h1 className="mt-6 font-display text-4xl leading-[1.08] font-semibold text-ink sm:text-5xl lg:text-6xl">
@@ -139,12 +173,18 @@ function Home() {
                 minutes. One account for cleaning, repairs, salon, painting, moving and more.
               </p>
 
-              <div className="card-premium mt-8 grid gap-3 p-3 sm:grid-cols-[1fr_10rem] lg:grid-cols-[1fr_9rem_auto]">
+              <div
+                id="search"
+                className="card-premium relative mt-8 grid gap-3 p-3 sm:grid-cols-[1fr_10rem] lg:grid-cols-[1fr_9rem_auto]"
+              >
                 <div className="flex min-w-0 items-center gap-2.5 rounded-xl bg-secondary/60 px-3.5 py-3">
                   <Search className="size-4 shrink-0 text-muted-foreground" />
                   <input
                     aria-label="Search for a service"
                     placeholder="Search AC service, deep cleaning…"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && findServices()}
                     className="w-full min-w-0 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
                   />
                 </div>
@@ -152,15 +192,47 @@ function Home() {
                   <MapPin className="size-4 shrink-0 text-muted-foreground" />
                   <input
                     aria-label="Your location"
-                    defaultValue="Bengaluru"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
                     className="w-full min-w-0 bg-transparent text-sm text-foreground outline-none"
                   />
                 </div>
-                <Button variant="hero" size="lg" className="sm:col-span-2 lg:col-span-1 lg:px-7">
+                <Button
+                  variant="hero"
+                  size="lg"
+                  onClick={findServices}
+                  className="sm:col-span-2 lg:col-span-1 lg:px-7"
+                >
                   Find services
                 </Button>
+
+                {matches.length > 0 && (
+                  <div className="card-premium absolute top-full right-0 left-0 z-20 mt-2 overflow-hidden p-2">
+                    {matches.map((s) => (
+                      <Link
+                        key={s.slug}
+                        to="/service/$slug"
+                        params={{ slug: s.slug }}
+                        className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm hover:bg-secondary"
+                      >
+                        <span className="truncate text-foreground">{s.title}</span>
+                        <span className="shrink-0 text-xs text-muted-foreground">{s.category}</span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
 
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Button variant="hero" size="lg" onClick={focusSearch}>
+                  Book a service
+                </Button>
+                <Button variant="glass" size="lg" asChild>
+                  <Link to="/services">
+                    Explore services <ArrowRight />
+                  </Link>
+                </Button>
+              </div>
 
               <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
                 <span className="inline-flex items-center gap-2">
@@ -230,14 +302,21 @@ function Home() {
                 what you are booking.
               </p>
             </div>
-            <Button variant="glass" size="lg">
-              View all categories <ArrowRight />
+            <Button variant="glass" size="lg" asChild>
+              <Link to="/services">
+                View all categories <ArrowRight />
+              </Link>
             </Button>
           </div>
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((cat) => (
-              <article key={cat.slug} className="card-premium lift-hover group overflow-hidden">
+              <Link
+                key={cat.slug}
+                to="/category/$slug"
+                params={{ slug: cat.slug }}
+                className="card-premium lift-hover group block overflow-hidden"
+              >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
                     src={cat.image}
@@ -265,7 +344,7 @@ function Home() {
                     </span>
                   </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </section>
@@ -283,69 +362,17 @@ function Home() {
             </div>
 
             <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {popularServices.map((svc) => (
-                <article key={svc.id} className="card-premium lift-hover group overflow-hidden">
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <img
-                      src={svc.image}
-                      alt={svc.title}
-                      width={800}
-                      height={1000}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <span className="absolute top-3 left-3 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
-                      {svc.category}
-                    </span>
-                    {svc.featured && (
-                      <span className="absolute top-3 right-12 rounded-full bg-[image:var(--gradient-gold)] px-3 py-1 text-xs font-semibold text-accent-foreground">
-                        Featured
-                      </span>
-                    )}
-                    <button
-                      type="button"
-                      aria-label={`Save ${svc.title} to wishlist`}
-                      className="absolute top-2.5 right-2.5 grid size-8 place-items-center rounded-full bg-card/90 text-muted-foreground backdrop-blur transition-colors hover:text-destructive"
-                    >
-                      <Heart className="size-4" />
-                    </button>
-                  </div>
-
-                  <div className="p-5">
-                    <div className="flex items-center justify-between gap-3">
-                      <Rating value={svc.rating} reviews={svc.reviews} />
-                      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                        <Timer className="size-3.5" /> {svc.duration}
-                      </span>
-                    </div>
-
-                    <h3 className="mt-3 text-lg leading-snug font-semibold text-foreground">
-                      {svc.title}
-                    </h3>
-
-                    <p className="mt-2 inline-flex items-center gap-1.5 text-sm text-muted-foreground">
-                      {svc.provider}
-                      {svc.verified && <BadgeCheck className="size-4 text-success" />}
-                    </p>
-
-                    <div className="mt-5 flex items-center justify-between gap-3 border-t border-border pt-4">
-                      <div>
-                        <span className="font-display text-xl font-semibold text-ink">
-                          ₹{svc.price.toLocaleString("en-IN")}
-                        </span>
-                        {svc.strikePrice && (
-                          <span className="ml-2 text-sm text-muted-foreground line-through">
-                            ₹{svc.strikePrice.toLocaleString("en-IN")}
-                          </span>
-                        )}
-                      </div>
-                      <Button variant="hero" size="sm">
-                        Book now
-                      </Button>
-                    </div>
-                  </div>
-                </article>
+              {featuredServices.map((svc) => (
+                <ServiceCard key={svc.slug} svc={svc} />
               ))}
+            </div>
+
+            <div className="mt-10">
+              <Button variant="glass" size="lg" asChild>
+                <Link to="/services">
+                  See all services <ArrowRight />
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -476,10 +503,28 @@ function Home() {
               </ul>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button variant="hero" size="lg">
+                <Button
+                  variant="hero"
+                  size="lg"
+                  onClick={() =>
+                    openWhatsApp({
+                      serviceName: "Provider Registration",
+                      notes: "I want to join BookYourService as a verified service provider.",
+                    })
+                  }
+                >
                   Become a provider <ArrowRight />
                 </Button>
-                <Button variant="glass" size="lg">
+                <Button
+                  variant="glass"
+                  size="lg"
+                  onClick={() =>
+                    openWhatsApp({
+                      serviceName: "Provider Verification Query",
+                      notes: "Please explain how provider verification works.",
+                    })
+                  }
+                >
                   See how verification works
                 </Button>
               </div>
@@ -508,8 +553,18 @@ function Home() {
               <p className="mt-3 text-muted-foreground">
                 Still unsure? Our support team responds through chat, email and phone.
               </p>
-              <Button variant="glass" size="lg" className="mt-6">
-                Contact support
+              <Button
+                variant="glass"
+                size="lg"
+                className="mt-6"
+                onClick={() =>
+                  openWhatsApp({
+                    serviceName: "Customer Support",
+                    notes: "I need help with a booking.",
+                  })
+                }
+              >
+                <MessageCircle /> Contact support
               </Button>
             </div>
 
