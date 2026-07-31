@@ -1,27 +1,48 @@
+import { Link } from "@tanstack/react-router";
 import { ShieldCheck } from "lucide-react";
+import { openWhatsApp } from "@/lib/whatsapp";
 
-const columns = [
+type FooterLink = { label: string; to?: "/" | "/services"; wa?: string };
+
+const columns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Customers",
-    links: ["Browse categories", "Popular services", "Request a quote", "Booking help", "Refunds"],
+    links: [
+      { label: "Browse categories", to: "/services" },
+      { label: "Popular services", to: "/services" },
+      { label: "Request a quote", wa: "I'd like a custom quote." },
+      { label: "Booking help", wa: "I need help with my booking." },
+      { label: "Refunds", wa: "I have a question about a refund." },
+    ],
   },
   {
     title: "Providers",
     links: [
-      "Join as a provider",
-      "Verification process",
-      "Pricing & payouts",
-      "Provider app",
-      "Growth resources",
+      { label: "Join as a provider", wa: "I want to join as a service provider." },
+      { label: "Verification process", wa: "How does provider verification work?" },
+      { label: "Pricing & payouts", wa: "Tell me about provider pricing and payouts." },
+      { label: "Provider app", wa: "Tell me about the provider app." },
+      { label: "Growth resources", wa: "Share provider growth resources." },
     ],
   },
   {
     title: "Company",
-    links: ["About BookYourService", "Careers", "Press", "Trust & safety", "Contact"],
+    links: [
+      { label: "About BookYourService", to: "/" },
+      { label: "Careers", wa: "I'm interested in careers at BookYourService." },
+      { label: "Press", wa: "Press enquiry." },
+      { label: "Trust & safety", wa: "I have a trust & safety question." },
+      { label: "Contact", wa: "Hello, I'd like to get in touch." },
+    ],
   },
   {
     title: "Legal",
-    links: ["Terms of service", "Privacy policy", "Cancellation policy", "Cookie preferences"],
+    links: [
+      { label: "Terms of service", wa: "Please share your terms of service." },
+      { label: "Privacy policy", wa: "Please share your privacy policy." },
+      { label: "Cancellation policy", wa: "Please share your cancellation policy." },
+      { label: "Cookie preferences", wa: "I have a question about cookie preferences." },
+    ],
   },
 ];
 
@@ -53,13 +74,25 @@ export function SiteFooter() {
               <h3 className="text-sm font-semibold text-foreground">{col.title}</h3>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {link}
-                    </a>
+                  <li key={link.label}>
+                    {link.to ? (
+                      <Link
+                        to={link.to}
+                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          openWhatsApp({ serviceName: link.label, notes: link.wa })
+                        }
+                        className="text-left text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {link.label}
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>
