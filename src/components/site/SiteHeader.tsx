@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Menu, Moon, Search, ShieldCheck, Sun, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { label: "Categories", href: "#categories" },
-  { label: "Popular services", href: "#services" },
-  { label: "How it works", href: "#how-it-works" },
-  { label: "For providers", href: "#providers" },
-  { label: "Support", href: "#faq" },
+  { label: "Categories", href: "/services" },
+  { label: "Popular services", href: "/#services" },
+  { label: "How it works", href: "/#how-it-works" },
+  { label: "For providers", href: "/#providers" },
+  { label: "Support", href: "/#faq" },
 ];
 
 function useTheme() {
@@ -37,6 +37,21 @@ function useTheme() {
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const { dark, toggle } = useTheme();
+  const navigate = useNavigate();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  const goToSearch = () => {
+    setOpen(false);
+    if (pathname === "/") {
+      const el = document.getElementById("search");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        (el.querySelector("input") as HTMLInputElement | null)?.focus();
+        return;
+      }
+    }
+    navigate({ to: "/", hash: "search" });
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-xl">
@@ -67,6 +82,7 @@ export function SiteHeader() {
             variant="ghost"
             size="icon"
             aria-label="Search services"
+            onClick={goToSearch}
             className="hidden sm:inline-flex"
           >
             <Search />
@@ -79,10 +95,10 @@ export function SiteHeader() {
           >
             {dark ? <Sun /> : <Moon />}
           </Button>
-          <Button variant="glass" size="sm" className="hidden xl:inline-flex">
-            Sign in
+          <Button variant="glass" size="sm" className="hidden xl:inline-flex" asChild>
+            <Link to="/services">Browse services</Link>
           </Button>
-          <Button variant="hero" size="sm" className="hidden md:inline-flex">
+          <Button variant="hero" size="sm" className="hidden md:inline-flex" onClick={goToSearch}>
             Book a service
           </Button>
           <Button
@@ -112,10 +128,12 @@ export function SiteHeader() {
               </a>
             ))}
             <div className="mt-3 flex gap-2">
-              <Button variant="glass" className="flex-1">
-                Sign in
+              <Button variant="glass" className="flex-1" asChild>
+                <Link to="/services" onClick={() => setOpen(false)}>
+                  Browse services
+                </Link>
               </Button>
-              <Button variant="hero" className="flex-1">
+              <Button variant="hero" className="flex-1" onClick={goToSearch}>
                 Book a service
               </Button>
             </div>
