@@ -10,33 +10,63 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as ServiceSlugRouteImport } from './routes/service.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategorySlugRoute = CategorySlugRouteImport.update({
+  id: '/category/$slug',
+  path: '/category/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiceSlugRoute = ServiceSlugRouteImport.update({
+  id: '/service/$slug',
+  path: '/service/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/services': typeof ServicesRoute
+  '/category/$slug': typeof CategorySlugRoute
+  '/service/$slug': typeof ServiceSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/services': typeof ServicesRoute
+  '/category/$slug': typeof CategorySlugRoute
+  '/service/$slug': typeof ServiceSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/services': typeof ServicesRoute
+  '/category/$slug': typeof CategorySlugRoute
+  '/service/$slug': typeof ServiceSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/services' | '/category/$slug' | '/service/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/services' | '/category/$slug' | '/service/$slug'
+  id: '__root__' | '/' | '/services' | '/category/$slug' | '/service/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ServicesRoute: typeof ServicesRoute
+  CategorySlugRoute: typeof CategorySlugRoute
+  ServiceSlugRoute: typeof ServiceSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,12 +78,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/category/$slug': {
+      id: '/category/$slug'
+      path: '/category/$slug'
+      fullPath: '/category/$slug'
+      preLoaderRoute: typeof CategorySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/service/$slug': {
+      id: '/service/$slug'
+      path: '/service/$slug'
+      fullPath: '/service/$slug'
+      preLoaderRoute: typeof ServiceSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ServicesRoute: ServicesRoute,
+  CategorySlugRoute: CategorySlugRoute,
+  ServiceSlugRoute: ServiceSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -230,3 +230,101 @@ export const faqs = [
     a: "UPI, cards, netbanking, wallets, and cash on service where the provider allows it. Receipts and invoices are stored in your payment history.",
   },
 ];
+
+/* ---------------- Catalog: slugged services for every category ---------------- */
+
+export type CatalogService = Service & {
+  slug: string;
+  categorySlug: string;
+  description: string;
+  quoteBased?: boolean;
+  includes: string[];
+};
+
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+const catBySlug = (slug: string) => categories.find((c) => c.slug === slug)!;
+
+const extraServices: Array<{
+  categorySlug: string;
+  title: string;
+  price: number;
+  strikePrice?: number;
+  rating: number;
+  reviews: number;
+  duration: string;
+  provider: string;
+  quoteBased?: boolean;
+}> = [
+  { categorySlug: "home-cleaning", title: "Bathroom Deep Cleaning", price: 599, strikePrice: 749, rating: 4.7, reviews: 512, duration: "60 min", provider: "SparkleCare Services" },
+  { categorySlug: "home-cleaning", title: "Sofa & Carpet Shampooing", price: 899, rating: 4.6, reviews: 288, duration: "90 min", provider: "FreshNest Cleaners" },
+  { categorySlug: "electrical", title: "Full House Wiring Inspection", price: 799, rating: 4.6, reviews: 191, duration: "2 hrs", provider: "VoltPro Electricals" },
+  { categorySlug: "electrical", title: "Inverter & Stabiliser Installation", price: 549, rating: 4.5, reviews: 143, duration: "60 min", provider: "PowerLine Experts" },
+  { categorySlug: "plumbing", title: "Bathroom Fittings Installation", price: 749, rating: 4.6, reviews: 233, duration: "2 hrs", provider: "AquaFix Bengaluru" },
+  { categorySlug: "plumbing", title: "Drainage & Blockage Clearing", price: 499, rating: 4.4, reviews: 176, duration: "60 min", provider: "PipeCare Pros" },
+  { categorySlug: "appliance-repair", title: "Washing Machine Repair Visit", price: 349, rating: 4.5, reviews: 402, duration: "45 min", provider: "HomeTech Repairs" },
+  { categorySlug: "appliance-repair", title: "Refrigerator Service & Gas Refill", price: 899, rating: 4.6, reviews: 265, duration: "90 min", provider: "CoolLine Technicians" },
+  { categorySlug: "painting", title: "Full Home Painting (Custom Quote)", price: 0, rating: 4.6, reviews: 121, duration: "3–6 days", provider: "FineFinish Painters", quoteBased: true },
+  { categorySlug: "painting", title: "Waterproofing & Texture Work", price: 0, rating: 4.5, reviews: 87, duration: "2–4 days", provider: "ShieldCoat Solutions", quoteBased: true },
+  { categorySlug: "salon-at-home", title: "Men's Grooming & Haircut", price: 449, rating: 4.7, reviews: 620, duration: "45 min", provider: "Aura Home Studio" },
+  { categorySlug: "salon-at-home", title: "Bridal Makeup Package", price: 0, rating: 4.9, reviews: 96, duration: "3 hrs", provider: "Glow Atelier", quoteBased: true },
+  { categorySlug: "carpentry", title: "Furniture Assembly & Fixing", price: 399, rating: 4.6, reviews: 310, duration: "60 min", provider: "WoodWorks Bengaluru" },
+  { categorySlug: "carpentry", title: "Custom Wardrobe (Site Quote)", price: 0, rating: 4.7, reviews: 64, duration: "5–10 days", provider: "Craftline Interiors", quoteBased: true },
+  { categorySlug: "pest-control", title: "Cockroach & Ant Treatment", price: 899, rating: 4.5, reviews: 421, duration: "60 min", provider: "SafeHome Pest Care" },
+  { categorySlug: "pest-control", title: "Termite Control Treatment", price: 2499, rating: 4.6, reviews: 158, duration: "3 hrs", provider: "SafeHome Pest Care" },
+  { categorySlug: "home-shifting", title: "Local Home Shifting (2 BHK)", price: 0, rating: 4.5, reviews: 142, duration: "6–8 hrs", provider: "MoveEasy Packers", quoteBased: true },
+  { categorySlug: "home-shifting", title: "Bike & Vehicle Transport", price: 0, rating: 4.4, reviews: 73, duration: "1–3 days", provider: "MoveEasy Packers", quoteBased: true },
+];
+
+export const allServices: CatalogService[] = [
+  ...popularServices.map((s) => {
+    const cat = categories.find((c) => c.name === s.category)!;
+    return {
+      ...s,
+      slug: slugify(s.title),
+      categorySlug: cat.slug,
+      description: `${s.title} delivered by ${s.provider}, a verified ${cat.name.toLowerCase()} partner in Bengaluru. Transparent pricing, trained professionals and a satisfaction check after every job.`,
+      includes: [
+        "Verified, background-checked professional",
+        "All tools and materials brought on site",
+        "Transparent pricing confirmed before work starts",
+        "Post-service quality check and support",
+      ],
+    } satisfies CatalogService;
+  }),
+  ...extraServices.map((s) => {
+    const cat = catBySlug(s.categorySlug);
+    return {
+      id: slugify(s.title),
+      title: s.title,
+      category: cat.name,
+      image: cat.image,
+      price: s.price,
+      strikePrice: s.strikePrice,
+      rating: s.rating,
+      reviews: s.reviews,
+      duration: s.duration,
+      provider: s.provider,
+      verified: true,
+      slug: slugify(s.title),
+      categorySlug: cat.slug,
+      quoteBased: s.quoteBased,
+      description: `${s.title} by ${s.provider}. ${cat.blurb}. Serving all major neighbourhoods across Bengaluru with verified professionals.`,
+      includes: [
+        "Verified, background-checked professional",
+        "Upfront estimate before work begins",
+        "Quality materials and proper equipment",
+        "Support on WhatsApp until the job is closed",
+      ],
+    } satisfies CatalogService;
+  }),
+];
+
+export const getServiceBySlug = (slug: string) => allServices.find((s) => s.slug === slug);
+export const getCategoryBySlug = (slug: string) => categories.find((c) => c.slug === slug);
+export const getServicesByCategory = (slug: string) =>
+  allServices.filter((s) => s.categorySlug === slug);
