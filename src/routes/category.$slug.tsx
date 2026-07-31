@@ -4,7 +4,12 @@ import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { ServiceCard } from "@/components/site/ServiceCard";
-import { getCategoryBySlug, getServicesByCategory } from "@/components/site/data";
+import {
+  getCategoryBySlug,
+  getServicesByCategory,
+  type CatalogService,
+  type Category,
+} from "@/components/site/data";
 import { openWhatsApp } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/category/$slug")({
@@ -35,7 +40,10 @@ export const Route = createFileRoute("/category/$slug")({
 });
 
 function CategoryPage() {
-  const { category, services } = Route.useLoaderData();
+  const { category, services } = Route.useLoaderData() as {
+    category: Category;
+    services: CatalogService[];
+  };
 
   return (
     <div className="min-h-screen bg-background">
