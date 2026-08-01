@@ -20,7 +20,7 @@ const buttonVariants = cva(
         gold: "bg-[image:var(--gradient-gold)] text-accent-foreground shadow-[var(--shadow-soft)] hover:brightness-105",
         subtle: "bg-secondary text-secondary-foreground hover:bg-secondary/70",
         glass:
-          "border border-border/60 bg-card/70 text-foreground backdrop-blur-md hover:bg-card shadow-[var(--shadow-soft)]",
+          "border border-primary bg-card text-primary hover:bg-primary-soft active:bg-primary-soft shadow-[var(--shadow-soft)]",
       },
       size: {
         default: "h-9 px-4 py-2",
