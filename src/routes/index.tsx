@@ -141,7 +141,7 @@ function Home() {
       navigate({ to: "/service/$slug", params: { slug: matches[0].slug } });
       return;
     }
-    navigate({ to: "/services" });
+    navigate({ to: "/search", search: { q: query.trim() } });
   };
 
   const focusSearch = () => {
