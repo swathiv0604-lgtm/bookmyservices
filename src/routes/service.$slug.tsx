@@ -14,7 +14,7 @@ import {
   type CatalogService,
 } from "@/components/site/data";
 import { BUSINESS_CONFIG } from "@/config/business";
-import { openWhatsApp } from "@/lib/whatsapp";
+import { OrderNowButton } from "@/components/site/OrderNowButton";
 import { isMobileDevice, payNow } from "@/lib/payment";
 
 export const Route = createFileRoute("/service/$slug")({
@@ -133,19 +133,16 @@ function ServiceDetail() {
               <p className="mt-1 text-xs text-muted-foreground">{BUSINESS_CONFIG.city}</p>
 
               <div className="mt-6 grid gap-2">
-                <Button
-                  variant="hero"
+                <OrderNowButton
                   size="lg"
-                  onClick={() =>
-                    openWhatsApp({
-                      serviceName: service.title,
-                      category: service.category,
-                      location: BUSINESS_CONFIG.city,
-                    })
-                  }
+                  intent={{
+                    serviceName: service.title,
+                    category: service.category,
+                    location: BUSINESS_CONFIG.city,
+                  }}
                 >
                   <MessageCircle /> Order now
-                </Button>
+                </OrderNowButton>
                 {hasPrice && (
                   <Button variant="gold" size="lg" onClick={handlePay}>
                     <CreditCard /> Pay now
@@ -196,19 +193,15 @@ function ServiceDetail() {
               Get quote
             </Button>
           )}
-          <Button
-            variant="hero"
-            size="sm"
-            onClick={() =>
-              openWhatsApp({
-                serviceName: service.title,
-                category: service.category,
-                location: BUSINESS_CONFIG.city,
-              })
-            }
+          <OrderNowButton
+            intent={{
+              serviceName: service.title,
+              category: service.category,
+              location: BUSINESS_CONFIG.city,
+            }}
           >
             Order now
-          </Button>
+          </OrderNowButton>
         </div>
       </div>
 

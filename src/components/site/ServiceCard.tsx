@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { BadgeCheck, Heart, MessageCircle, Star, Timer } from "lucide-react";
+import { BadgeCheck, Heart, Star, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { CatalogService } from "@/components/site/data";
-import { openWhatsApp } from "@/lib/whatsapp";
+import { OrderNowButton } from "@/components/site/OrderNowButton";
 
 export function ServiceCard({ svc }: { svc: CatalogService }) {
   return (
@@ -76,13 +76,7 @@ export function ServiceCard({ svc }: { svc: CatalogService }) {
                 View details
               </Link>
             </Button>
-            <Button
-              variant="hero"
-              size="sm"
-              onClick={() => openWhatsApp({ serviceName: svc.title, category: svc.category })}
-            >
-              <MessageCircle className="size-4" /> Order now
-            </Button>
+            <OrderNowButton intent={{ serviceName: svc.title, category: svc.category }} />
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ import {
   type CatalogService,
   type Category,
 } from "@/components/site/data";
-import { openWhatsApp } from "@/lib/whatsapp";
+import { OrderNowButton } from "@/components/site/OrderNowButton";
 
 export const Route = createFileRoute("/category/$slug")({
   loader: ({ params }) => {
@@ -68,13 +68,12 @@ function CategoryPage() {
               </h1>
               <p className="mt-4 max-w-xl text-muted-foreground">{category.blurb}. Verified professionals across Bengaluru, starting from ₹{category.from.toLocaleString("en-IN")}.</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button
-                  variant="hero"
+                <OrderNowButton
                   size="lg"
-                  onClick={() => openWhatsApp({ serviceName: category.name, category: category.name })}
+                  intent={{ serviceName: category.name, category: category.name }}
                 >
                   <MessageCircle /> Order on WhatsApp
-                </Button>
+                </OrderNowButton>
                 <Button variant="glass" size="lg" asChild>
                   <Link to="/services">All categories</Link>
                 </Button>
@@ -88,13 +87,37 @@ function CategoryPage() {
 
         <section className="section-shell py-14">
           <h2 className="font-display text-2xl font-semibold text-ink sm:text-3xl">
-            {services.length} services available
+            {services.length > 0 ? `${services.length} services available` : "Coming soon"}
           </h2>
-          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {services.map((svc) => (
-              <ServiceCard key={svc.slug} svc={svc} />
-            ))}
-          </div>
+          {services.length === 0 ? (
+            <div className="card-premium mt-8 flex flex-col items-center gap-4 p-10 text-center">
+              <h3 className="font-display text-xl font-semibold text-ink">
+                No services listed here yet
+              </h3>
+              <p className="max-w-md text-sm text-muted-foreground">
+                We&apos;re onboarding verified {category.name.toLowerCase()} professionals in
+                Bengaluru. Browse everything else in the meantime, or ask us on WhatsApp.
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Button variant="hero" size="lg" asChild>
+                  <Link to="/services">Explore all services</Link>
+                </Button>
+                <OrderNowButton
+                  size="lg"
+                  variant="glass"
+                  intent={{ serviceName: category.name, category: category.name }}
+                >
+                  Ask on WhatsApp
+                </OrderNowButton>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {services.map((svc) => (
+                <ServiceCard key={svc.slug} svc={svc} />
+              ))}
+            </div>
+          )}
         </section>
       </main>
       <SiteFooter />
