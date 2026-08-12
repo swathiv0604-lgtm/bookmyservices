@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { ShieldCheck } from "lucide-react";
+import { ArrowRight, Instagram } from "lucide-react";
 import { openWhatsApp } from "@/lib/whatsapp";
+import { BrandLogo } from "@/components/site/BrandLogo";
+import { BUSINESS_CONFIG } from "@/config/business";
 
 type FooterLink = { label: string; to?: "/" | "/services"; wa?: string };
 

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Menu, Moon, Search, ShieldCheck, Sun, X } from "lucide-react";
+import { Instagram, Menu, Moon, Search, Sun, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/site/BrandLogo";
+import { BUSINESS_CONFIG } from "@/config/business";
 
 const navLinks = [
   { label: "Categories", href: "/services" },
