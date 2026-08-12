@@ -84,6 +84,17 @@ export function SiteHeader() {
           >
             <Search />
           </Button>
+          {BUSINESS_CONFIG.instagramUrl && (
+            <a
+              href={BUSINESS_CONFIG.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow us on Instagram (opens in a new tab)"
+              className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-safe:hover:scale-110"
+            >
+              <Instagram className="size-5" />
+            </a>
+          )}
           <Button
             variant="ghost"
             size="icon"
