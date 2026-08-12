@@ -7,6 +7,15 @@ import beauty from "@/assets/cat-beauty.jpg";
 import carpentry from "@/assets/cat-carpentry.jpg";
 import pest from "@/assets/cat-pest.jpg";
 import moving from "@/assets/cat-moving.jpg";
+import acImg from "@/assets/cat-ac.jpg";
+import automobile from "@/assets/cat-automobile.jpg";
+import tutoring from "@/assets/cat-tutoring.jpg";
+import events from "@/assets/cat-events.jpg";
+import security from "@/assets/cat-security.jpg";
+import pets from "@/assets/cat-pets.jpg";
+import documents from "@/assets/cat-documents.jpg";
+import childcare from "@/assets/cat-childcare.jpg";
+import food from "@/assets/cat-food.jpg";
 
 export type Category = {
   slug: string;
