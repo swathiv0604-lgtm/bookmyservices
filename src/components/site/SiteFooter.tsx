@@ -53,14 +53,7 @@ export function SiteFooter() {
     <footer className="border-t border-border bg-card/40">
       <div className="section-shell grid gap-12 py-16 lg:grid-cols-[1.3fr_2.7fr]">
         <div className="max-w-sm">
-          <div className="flex items-center gap-2.5">
-            <span className="grid size-9 place-items-center rounded-xl bg-[image:var(--gradient-primary)] text-primary-foreground">
-              <ShieldCheck className="size-5" />
-            </span>
-            <span className="font-display text-lg font-semibold text-ink">
-              BookYour<span className="text-gradient-primary">Service</span>
-            </span>
-          </div>
+          <BrandLogo className="h-14" />
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
             A marketplace that connects customers with verified local service providers. Discover,
             compare, book, and manage every home or business service in one place.
