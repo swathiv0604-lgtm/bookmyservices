@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { ShieldCheck } from "lucide-react";
+import { ArrowRight, Instagram } from "lucide-react";
 import { openWhatsApp } from "@/lib/whatsapp";
+import { BrandLogo } from "@/components/site/BrandLogo";
+import { BUSINESS_CONFIG } from "@/config/business";
 
 type FooterLink = { label: string; to?: "/" | "/services"; wa?: string };
 
@@ -51,14 +53,7 @@ export function SiteFooter() {
     <footer className="border-t border-border bg-card/40">
       <div className="section-shell grid gap-12 py-16 lg:grid-cols-[1.3fr_2.7fr]">
         <div className="max-w-sm">
-          <div className="flex items-center gap-2.5">
-            <span className="grid size-9 place-items-center rounded-xl bg-[image:var(--gradient-primary)] text-primary-foreground">
-              <ShieldCheck className="size-5" />
-            </span>
-            <span className="font-display text-lg font-semibold text-ink">
-              BookYour<span className="text-gradient-primary">Service</span>
-            </span>
-          </div>
+          <BrandLogo className="h-14" />
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
             A marketplace that connects customers with verified local service providers. Discover,
             compare, book, and manage every home or business service in one place.
@@ -66,6 +61,25 @@ export function SiteFooter() {
           <p className="mt-4 text-sm text-muted-foreground">
             Launching in Bengaluru, Karnataka · expanding city by city.
           </p>
+          {BUSINESS_CONFIG.instagramUrl && (
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold text-foreground">Stay connected</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Follow Book Your Service.com on Instagram for service updates, offers and tips.
+              </p>
+              <a
+                href={BUSINESS_CONFIG.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group mt-3 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-sm font-medium text-primary transition-all duration-200 hover:bg-primary/10 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-safe:hover:-translate-y-0.5"
+              >
+                <Instagram className="size-4 transition-transform duration-200 motion-safe:group-hover:scale-110" />
+                Follow us on Instagram
+                <ArrowRight className="size-4 transition-transform duration-200 motion-safe:group-hover:translate-x-0.5" />
+                <span className="sr-only">(opens our official Instagram page in a new tab)</span>
+              </a>
+            </div>
+          )}
         </div>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">

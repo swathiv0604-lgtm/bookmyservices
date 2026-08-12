@@ -4,4 +4,6 @@ export const BUSINESS_CONFIG = {
   upiId: "7892482733@ibl",
   upiPayeeName: "BookYourService",
   city: "Bengaluru, Karnataka, India",
+  // Paste the official Instagram profile URL here to show Instagram links site-wide.
+  instagramUrl: "",
 };

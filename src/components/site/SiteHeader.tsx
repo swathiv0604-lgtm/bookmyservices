@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Menu, Moon, Search, ShieldCheck, Sun, X } from "lucide-react";
+import { Instagram, Menu, Moon, Search, Sun, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/site/BrandLogo";
+import { BUSINESS_CONFIG } from "@/config/business";
 
 const navLinks = [
   { label: "Categories", href: "/services" },
@@ -56,13 +58,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-xl">
       <div className="section-shell flex h-18 items-center justify-between gap-4 py-3">
-        <Link to="/" className="flex items-center gap-2.5">
-          <span className="grid size-9 place-items-center rounded-xl bg-[image:var(--gradient-primary)] text-primary-foreground shadow-[var(--shadow-elevate)]">
-            <ShieldCheck className="size-5" />
-          </span>
-          <span className="font-display text-lg font-semibold tracking-tight text-ink">
-            BookYour<span className="text-gradient-primary">Service</span>
-          </span>
+        <Link to="/" aria-label="Book Your Service.com home" className="flex items-center">
+          <BrandLogo className="h-10 sm:h-12" />
         </Link>
 
         <nav className="hidden shrink-0 items-center gap-6 lg:flex xl:gap-7" aria-label="Primary">
@@ -87,6 +84,17 @@ export function SiteHeader() {
           >
             <Search />
           </Button>
+          {BUSINESS_CONFIG.instagramUrl && (
+            <a
+              href={BUSINESS_CONFIG.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow us on Instagram (opens in a new tab)"
+              className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-safe:hover:scale-110"
+            >
+              <Instagram className="size-5" />
+            </a>
+          )}
           <Button
             variant="ghost"
             size="icon"
