@@ -56,13 +56,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-xl">
       <div className="section-shell flex h-18 items-center justify-between gap-4 py-3">
-        <Link to="/" className="flex items-center gap-2.5">
-          <span className="grid size-9 place-items-center rounded-xl bg-[image:var(--gradient-primary)] text-primary-foreground shadow-[var(--shadow-elevate)]">
-            <ShieldCheck className="size-5" />
-          </span>
-          <span className="font-display text-lg font-semibold tracking-tight text-ink">
-            BookYour<span className="text-gradient-primary">Service</span>
-          </span>
+        <Link to="/" aria-label="Book Your Service.com home" className="flex items-center">
+          <BrandLogo className="h-10 sm:h-12" />
         </Link>
 
         <nav className="hidden shrink-0 items-center gap-6 lg:flex xl:gap-7" aria-label="Primary">
