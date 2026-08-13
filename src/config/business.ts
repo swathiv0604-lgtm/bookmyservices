@@ -5,5 +5,5 @@ export const BUSINESS_CONFIG = {
   upiPayeeName: "BookYourService",
   city: "Bengaluru, Karnataka, India",
   // Paste the official Instagram profile URL here to show Instagram links site-wide.
-  instagramUrl: "",
+  instagramUrl: "https://www.instagram.com/bookyourservice_bys",
 };
