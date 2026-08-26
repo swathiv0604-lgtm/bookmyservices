@@ -41,16 +41,14 @@ const columns: { title: string; links: FooterLink[] }[] = [
       { label: "Contact", wa: "Hello, I'd like to get in touch." },
     ],
   },
-  {
-    title: "Legal",
-    links: [
-      { label: "Terms of service", wa: "Please share your terms of service." },
-      { label: "Privacy policy", wa: "Please share your privacy policy." },
-      { label: "Cancellation policy", wa: "Please share your cancellation policy." },
-      { label: "Cookie preferences", wa: "I have a question about cookie preferences." },
-    ],
-  },
 ];
+
+const legalLinks: { label: string; to: "/terms-of-service" | "/privacy-policy" }[] = [
+  { label: "Terms of service", to: "/terms-of-service" },
+  { label: "Privacy policy", to: "/privacy-policy" },
+];
+
+const legalFont = { fontFamily: '"Times New Roman", Times, serif', fontSize: "10px" };
 
 export function SiteFooter() {
   return (
