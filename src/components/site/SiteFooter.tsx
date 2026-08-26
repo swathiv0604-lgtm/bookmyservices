@@ -4,7 +4,11 @@ import { openWhatsApp } from "@/lib/whatsapp";
 import { BrandLogo } from "@/components/site/BrandLogo";
 import { BUSINESS_CONFIG } from "@/config/business";
 
-type FooterLink = { label: string; to?: "/" | "/services"; wa?: string };
+type FooterLink = {
+  label: string;
+  to?: "/" | "/services" | "/terms-of-service" | "/privacy-policy";
+  wa?: string;
+};
 
 const columns: { title: string; links: FooterLink[] }[] = [
   {
