@@ -4,7 +4,11 @@ import { openWhatsApp } from "@/lib/whatsapp";
 import { BrandLogo } from "@/components/site/BrandLogo";
 import { BUSINESS_CONFIG } from "@/config/business";
 
-type FooterLink = { label: string; to?: "/" | "/services"; wa?: string };
+type FooterLink = {
+  label: string;
+  to?: "/" | "/services" | "/terms-of-service" | "/privacy-policy";
+  wa?: string;
+};
 
 const columns: { title: string; links: FooterLink[] }[] = [
   {
@@ -37,16 +41,14 @@ const columns: { title: string; links: FooterLink[] }[] = [
       { label: "Contact", wa: "Hello, I'd like to get in touch." },
     ],
   },
-  {
-    title: "Legal",
-    links: [
-      { label: "Terms of service", wa: "Please share your terms of service." },
-      { label: "Privacy policy", wa: "Please share your privacy policy." },
-      { label: "Cancellation policy", wa: "Please share your cancellation policy." },
-      { label: "Cookie preferences", wa: "I have a question about cookie preferences." },
-    ],
-  },
 ];
+
+const legalLinks: { label: string; to: "/terms-of-service" | "/privacy-policy" }[] = [
+  { label: "Terms of service", to: "/terms-of-service" },
+  { label: "Privacy policy", to: "/privacy-policy" },
+];
+
+const legalFont = { fontFamily: '"Times New Roman", Times, serif', fontSize: "10px" };
 
 export function SiteFooter() {
   return (
@@ -112,6 +114,25 @@ export function SiteFooter() {
               </ul>
             </div>
           ))}
+
+          <nav aria-label="Legal" style={legalFont}>
+            <h3 className="font-semibold text-foreground" style={legalFont}>
+              Legal
+            </h3>
+            <ul className="mt-2 space-y-1">
+              {legalLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
+                    style={legalFont}
+                    className="text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
 
