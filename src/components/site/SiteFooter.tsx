@@ -114,6 +114,25 @@ export function SiteFooter() {
               </ul>
             </div>
           ))}
+
+          <nav aria-label="Legal" style={legalFont}>
+            <h3 className="font-semibold text-foreground" style={legalFont}>
+              Legal
+            </h3>
+            <ul className="mt-2 space-y-1">
+              {legalLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
+                    style={legalFont}
+                    className="text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
 
