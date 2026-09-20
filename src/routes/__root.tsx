@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { FloatingWhatsApp } from "@/components/site/FloatingWhatsApp";
+import { TermsConsentGate } from "@/components/site/TermsConsentGate";
 
 function NotFoundComponent() {
   return (
@@ -140,6 +141,7 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <FloatingWhatsApp />
+      <TermsConsentGate />
     </QueryClientProvider>
   );
 }
