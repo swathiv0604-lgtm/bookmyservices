@@ -260,7 +260,7 @@ function Home() {
                 />
               </div>
 
-              <div className="card-premium absolute -bottom-6 left-4 hidden w-64 p-4 sm:block">
+              <div className="card-premium absolute bottom-36 left-0 hidden w-64 p-4 sm:block lg:-left-2 xl:left-4">
                 <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
                   <span className="grid size-8 place-items-center rounded-lg bg-success-soft text-success">
                     <BadgeCheck className="size-4" />
