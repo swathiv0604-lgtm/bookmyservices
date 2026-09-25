@@ -29,7 +29,8 @@ import { ServiceCard } from "@/components/site/ServiceCard";
 import { allServices, categories, faqs, testimonials } from "@/components/site/data";
 import { openWhatsApp } from "@/lib/whatsapp";
 import { BUSINESS_CONFIG } from "@/config/business";
-import heroImage from "@/assets/hero.jpg";
+import heroAsset from "@/assets/hero-official.jpeg.asset.json";
+const heroImage = heroAsset.url;
 import providerImage from "@/assets/provider-cta.jpg";
 
 export const Route = createFileRoute("/")({
@@ -248,13 +249,14 @@ function Home() {
             </div>
 
             <div className="relative">
-              <div className="overflow-hidden rounded-[2rem] border border-border shadow-[var(--shadow-elevate)]">
+              <div className="mx-auto w-fit max-w-full overflow-hidden rounded-[2rem] border border-border shadow-[var(--shadow-elevate)]">
                 <img
                   src={heroImage}
-                  alt="Verified BookYourService professional arriving at a customer's home"
-                  width={1600}
-                  height={1200}
-                  className="h-full w-full object-cover"
+                  alt="Official BookYourServiceConnect professional in the red company uniform — Every service. One place."
+                  width={900}
+                  height={1600}
+                  fetchPriority="high"
+                  className="block h-auto max-h-[560px] w-auto max-w-full sm:max-h-[640px] lg:max-h-[680px]"
                 />
               </div>
 
