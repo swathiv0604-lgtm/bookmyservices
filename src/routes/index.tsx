@@ -29,8 +29,7 @@ import { ServiceCard } from "@/components/site/ServiceCard";
 import { allServices, categories, faqs, testimonials } from "@/components/site/data";
 import { openWhatsApp } from "@/lib/whatsapp";
 import { BUSINESS_CONFIG } from "@/config/business";
-import heroAsset from "@/assets/hero-official.jpeg.asset.json";
-const heroImage = heroAsset.url;
+import heroImage from "@/assets/hero-official.jpg";
 import providerImage from "@/assets/provider-cta.jpg";
 
 export const Route = createFileRoute("/")({
