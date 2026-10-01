@@ -14,6 +14,7 @@ import {
   type CatalogService,
 } from "@/components/site/data";
 import { BUSINESS_CONFIG } from "@/config/business";
+import { ReviewsSection } from "@/components/site/reviews/ReviewsSection";
 import { OrderNowButton } from "@/components/site/OrderNowButton";
 import { isMobileDevice, payNow } from "@/lib/payment";
 
@@ -90,11 +91,6 @@ function ServiceDetail() {
             </h1>
 
             <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
-              <span className="inline-flex items-center gap-1.5">
-                <Star className="size-4 fill-accent text-accent" />
-                <span className="font-semibold text-foreground">{service.rating.toFixed(1)}</span> (
-                {service.reviews.toLocaleString("en-IN")} reviews)
-              </span>
               <span className="inline-flex items-center gap-1.5">
                 <Timer className="size-4" /> {service.duration}
               </span>
@@ -173,6 +169,8 @@ function ServiceDetail() {
             </div>
           </section>
         )}
+
+        <ReviewsSection serviceSlug={service.slug} className="mt-8 px-0 sm:px-0 lg:px-0" />
       </main>
 
       {/* Mobile sticky bar */}
