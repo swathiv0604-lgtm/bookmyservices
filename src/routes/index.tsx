@@ -26,7 +26,8 @@ import {
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { ServiceCard } from "@/components/site/ServiceCard";
-import { allServices, categories, faqs, testimonials } from "@/components/site/data";
+import { allServices, categories, faqs } from "@/components/site/data";
+import { ReviewsSection } from "@/components/site/reviews/ReviewsSection";
 import { openWhatsApp } from "@/lib/whatsapp";
 import { BUSINESS_CONFIG } from "@/config/business";
 import heroImage from "@/assets/hero-official.jpg";
@@ -57,7 +58,6 @@ export const Route = createFileRoute("/")({
 const trustStats = [
   { value: "1,800+", label: "Verified providers" },
   { value: "120+", label: "Services listed" },
-  { value: "4.8/5", label: "Average rating" },
   { value: "60 sec", label: "Median booking time" },
 ];
 
@@ -271,9 +271,6 @@ function Home() {
                 </p>
               </div>
 
-              <div className="card-premium absolute -top-5 -right-2 hidden p-3 md:block">
-                <Rating value={4.8} reviews={12480} />
-              </div>
             </div>
           </div>
 
@@ -433,41 +430,7 @@ function Home() {
           </div>
         </section>
 
-        {/* Testimonials */}
-        <section className="section-shell py-20">
-          <div className="max-w-2xl">
-            <h2 className="font-display text-3xl font-semibold text-ink sm:text-4xl">
-              What customers say after the job is done
-            </h2>
-            <p className="mt-3 text-muted-foreground">
-              Reviews can only be left for completed bookings made through the platform.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {testimonials.map((t) => (
-              <figure key={t.name} className="card-premium lift-hover flex h-full flex-col p-6">
-                <div className="flex gap-1" aria-label={`${t.rating} out of 5 stars`}>
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className={
-                        i < t.rating ? "size-4 fill-accent text-accent" : "size-4 text-border"
-                      }
-                    />
-                  ))}
-                </div>
-                <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-foreground">
-                  “{t.quote}”
-                </blockquote>
-                <figcaption className="mt-5 border-t border-border pt-4">
-                  <p className="text-sm font-semibold text-foreground">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.area}</p>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </section>
+        <ReviewsSection />
 
         {/* Provider CTA */}
         <section id="providers" className="section-shell pb-20">
