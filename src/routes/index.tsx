@@ -107,18 +107,6 @@ const guarantees = [
   },
 ];
 
-function Rating({ value, reviews }: { value: number; reviews?: number }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 text-sm">
-      <Star className="size-4 fill-accent text-accent" />
-      <span className="font-semibold text-foreground">{value.toFixed(1)}</span>
-      {reviews !== undefined && (
-        <span className="text-muted-foreground">({reviews.toLocaleString("en-IN")})</span>
-      )}
-    </span>
-  );
-}
-
 const featuredServices = allServices.slice(0, 6);
 
 function Home() {
