@@ -275,7 +275,7 @@ function Home() {
           </div>
 
           <div className="border-y border-border/70 bg-card/50">
-            <div className="section-shell grid grid-cols-2 gap-6 py-8 md:grid-cols-4">
+            <div className="section-shell grid grid-cols-2 gap-6 py-8 md:grid-cols-3">
               {trustStats.map((stat) => (
                 <div key={stat.label} className="text-center md:text-left">
                   <p className="font-display text-2xl font-semibold text-ink sm:text-3xl">
