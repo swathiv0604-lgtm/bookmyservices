@@ -69,7 +69,7 @@ export function ReviewsSection({
     staleTime: 60_000,
   });
 
-  // Newly approved reviews appear without a page refresh.
+  // New reviews appear without a page refresh.
   useEffect(() => {
     const ch = supabase
       .channel(`reviews-${serviceSlug ?? "all"}`)
