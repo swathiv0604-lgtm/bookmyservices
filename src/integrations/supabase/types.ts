@@ -70,13 +70,9 @@ export type Database = {
           created_at: string
           display_name: string
           id: string
-          moderated_at: string | null
-          moderated_by: string | null
-          moderation_note: string | null
           rating: number
           service_name: string | null
           service_slug: string | null
-          status: Database["public"]["Enums"]["review_status"]
           updated_at: string
           user_id: string | null
         }
@@ -85,13 +81,9 @@ export type Database = {
           created_at?: string
           display_name: string
           id?: string
-          moderated_at?: string | null
-          moderated_by?: string | null
-          moderation_note?: string | null
           rating: number
           service_name?: string | null
           service_slug?: string | null
-          status?: Database["public"]["Enums"]["review_status"]
           updated_at?: string
           user_id?: string | null
         }
@@ -100,33 +92,11 @@ export type Database = {
           created_at?: string
           display_name?: string
           id?: string
-          moderated_at?: string | null
-          moderated_by?: string | null
-          moderation_note?: string | null
           rating?: number
           service_name?: string | null
           service_slug?: string | null
-          status?: Database["public"]["Enums"]["review_status"]
           updated_at?: string
           user_id?: string | null
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Insert: {
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Update: {
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
         }
         Relationships: []
       }
@@ -135,13 +105,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
       review_summary: {
         Args: { _service_slug?: string }
         Returns: {
@@ -156,8 +119,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "moderator" | "user"
-      review_status: "pending" | "approved" | "rejected"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -284,9 +246,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      app_role: ["admin", "moderator", "user"],
-      review_status: ["pending", "approved", "rejected"],
-    },
+    Enums: {},
   },
 } as const
