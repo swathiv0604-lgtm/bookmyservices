@@ -161,7 +161,7 @@ export function WriteReviewDialog({
               Thank you for sharing your experience!
             </DialogTitle>
             <DialogDescription className="mt-2">
-              Your review has been submitted and will appear publicly after approval.
+              Thank you for sharing your experience! Your review is now live.
             </DialogDescription>
             <Button
               variant="hero"

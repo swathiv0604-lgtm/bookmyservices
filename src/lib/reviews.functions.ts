@@ -2,7 +2,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database } from "@/integrations/supabase/types";
 
 const BUCKET = "review-photos";
@@ -33,10 +32,6 @@ export type ReviewSummary = {
   distribution: Record<1 | 2 | 3 | 4 | 5, number>;
 };
 
-export type ModerationReview = PublicReview & {
-  status: "pending" | "approved" | "rejected";
-  moderationNote: string | null;
-};
 
 function publicClient() {
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
@@ -94,8 +89,6 @@ type Row = {
   service_name: string | null;
   service_slug: string | null;
   created_at: string;
-  status?: "pending" | "approved" | "rejected";
-  moderation_note?: string | null;
   review_images: { storage_path: string; sort_order: number }[];
 };
 
@@ -127,7 +120,6 @@ export const listReviews = createServerFn({ method: "GET" })
     let q = sb
       .from("reviews")
       .select("id, display_name, rating, body, service_name, service_slug, created_at, review_images(storage_path, sort_order)")
-      .eq("status", "approved")
       .order("created_at", { ascending: false })
       .range(data.offset, data.offset + REVIEW_LIMITS.pageSize);
     if (data.serviceSlug) q = q.eq("service_slug", data.serviceSlug);
@@ -243,7 +235,6 @@ export const submitReview = createServerFn({ method: "POST" })
         body,
         service_slug: data.serviceSlug,
         service_name: data.serviceName ? clean(data.serviceName) : null,
-        status: "pending",
       })
       .select("id")
       .single();
@@ -277,89 +268,3 @@ export const submitReview = createServerFn({ method: "POST" })
     return { ok: true as const };
   });
 
-async function assertAdmin(supabase: { rpc: (...a: never[]) => unknown }, userId: string) {
-  const { data } = await (supabase as unknown as {
-    rpc: (fn: string, args: object) => Promise<{ data: boolean | null }>;
-  }).rpc("has_role", { _user_id: userId, _role: "admin" });
-  if (!data) throw new Response("Forbidden", { status: 403 });
-}
-
-export const checkIsAdmin = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { data } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
-    return { isAdmin: Boolean(data) };
-  });
-
-export const listModerationQueue = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((d: unknown) =>
-    z.object({ status: z.enum(["pending", "approved", "rejected"]) }).parse(d),
-  )
-  .handler(async ({ data, context }) => {
-    await assertAdmin(context.supabase as never, context.userId);
-    const { data: rows, error } = await context.supabase
-      .from("reviews")
-      .select(
-        "id, display_name, rating, body, service_name, service_slug, created_at, status, moderation_note, review_images(storage_path, sort_order)",
-      )
-      .eq("status", data.status)
-      .order("created_at", { ascending: data.status === "pending" })
-      .limit(100);
-    if (error) throw new Error("Could not load reviews.");
-    const list = (rows ?? []) as Row[];
-    const photosFor = await signPhotos(list);
-    return list.map(
-      (r): ModerationReview => ({
-        id: r.id,
-        displayName: r.display_name,
-        rating: r.rating,
-        body: r.body,
-        serviceName: r.service_name,
-        serviceSlug: r.service_slug,
-        createdAt: r.created_at,
-        status: r.status ?? "pending",
-        moderationNote: r.moderation_note ?? null,
-        photos: photosFor(r),
-      }),
-    );
-  });
-
-export const moderateReview = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((d: unknown) =>
-    z
-      .object({
-        id: z.string().uuid(),
-        action: z.enum(["approve", "reject", "delete"]),
-        note: z.string().trim().max(300).optional(),
-      })
-      .parse(d),
-  )
-  .handler(async ({ data, context }) => {
-    await assertAdmin(context.supabase as never, context.userId);
-    if (data.action === "delete") {
-      const { data: imgs } = await context.supabase
-        .from("review_images")
-        .select("storage_path")
-        .eq("review_id", data.id);
-      const { error } = await context.supabase.from("reviews").delete().eq("id", data.id);
-      if (error) throw new Error("Could not remove the review.");
-      if (imgs?.length) {
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        await supabaseAdmin.storage.from(BUCKET).remove(imgs.map((i) => i.storage_path));
-      }
-      return { ok: true };
-    }
-    const { error } = await context.supabase
-      .from("reviews")
-      .update({
-        status: data.action === "approve" ? "approved" : "rejected",
-        moderated_by: context.userId,
-        moderated_at: new Date().toISOString(),
-        moderation_note: data.note ? clean(data.note) : null,
-      })
-      .eq("id", data.id);
-    if (error) throw new Error("Could not update the review.");
-    return { ok: true };
-  });
