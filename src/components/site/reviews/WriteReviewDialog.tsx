@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import { useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ImagePlus, Loader2, X } from "lucide-react";
 import { z } from "zod";
 import {
@@ -61,6 +62,7 @@ export function WriteReviewDialog({
   const [website, setWebsite] = useState("");
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const qc = useQueryClient();
   const [status, setStatus] = useState<"idle" | "processing" | "submitting" | "done">("idle");
   const [formError, setFormError] = useState("");
 
@@ -134,6 +136,7 @@ export function WriteReviewDialog({
         return;
       }
       setStatus("done");
+      qc.invalidateQueries({ queryKey: ["reviews"] });
       onSubmitted?.();
     } catch {
       setFormError("Something went wrong. Your review is still here — please try again.");
