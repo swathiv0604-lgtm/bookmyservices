@@ -40,13 +40,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, secure payments, real reviews.",
+          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, real reviews.",
       },
       { property: "og:title", content: "BookYourService — Book Verified Home Services in Bengaluru" },
       {
         property: "og:description",
         content:
-          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, secure payments, real reviews.",
+          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, real reviews.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -97,8 +97,8 @@ const guarantees = [
   },
   {
     icon: CreditCard,
-    title: "Secure payments",
-    text: "UPI, cards, netbanking, wallets or cash on service — with invoices stored in your account.",
+    title: "Pay after the service",
+    text: "No advance payment needed. Pay the professional directly once the work is done to your satisfaction.",
   },
   {
     icon: Headphones,
@@ -230,7 +230,7 @@ function Home() {
                   <Timer className="size-4 text-success" /> Same-day slots
                 </span>
                 <span className="inline-flex items-center gap-2">
-                  <CreditCard className="size-4 text-success" /> Secure payments
+                  <CreditCard className="size-4 text-success" /> Pay after service
                 </span>
               </div>
             </div>
@@ -399,8 +399,8 @@ function Home() {
               </h2>
               <p className="mt-3 max-w-lg text-muted-foreground">
                 BookYourService is a marketplace: we do not perform the work ourselves. What we do
-                is verify providers, keep pricing transparent, secure your payment, and stay
-                available if something goes wrong.
+                is verify providers, keep pricing transparent, and stay available if something
+                goes wrong.
               </p>
             </div>
 

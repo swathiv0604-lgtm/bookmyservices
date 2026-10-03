@@ -139,7 +139,7 @@ export function SiteFooter() {
       <div className="border-t border-border">
         <div className="section-shell flex flex-col items-center justify-between gap-3 py-6 text-xs text-muted-foreground sm:flex-row">
           <p>© {new Date().getFullYear()} BookYourService. All rights reserved.</p>
-          <p>Secure payments · Verified providers · Transparent pricing</p>
+          <p>Verified providers · Transparent pricing · Pay after service</p>
         </div>
       </div>
     </footer>

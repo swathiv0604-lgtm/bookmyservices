@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { BadgeCheck, Check, CreditCard, FileText, MessageCircle, Star, Timer } from "lucide-react";
+import { BadgeCheck, Check, FileText, MessageCircle, Star, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { ServiceCard } from "@/components/site/ServiceCard";
-import { PaymentModal } from "@/components/site/PaymentModal";
 import { QuoteDialog } from "@/components/site/QuoteDialog";
 import { BookingDialog } from "@/components/site/BookingDialog";
 import {
@@ -16,7 +15,6 @@ import {
 import { BUSINESS_CONFIG } from "@/config/business";
 import { ReviewsSection } from "@/components/site/reviews/ReviewsSection";
 import { OrderNowButton } from "@/components/site/OrderNowButton";
-import { isMobileDevice, payNow } from "@/lib/payment";
 
 export const Route = createFileRoute("/service/$slug")({
   loader: ({ params }) => {
@@ -53,16 +51,10 @@ function ServiceDetail() {
     service: CatalogService;
     related: CatalogService[];
   };
-  const [payOpen, setPayOpen] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [bookOpen, setBookOpen] = useState(false);
 
   const hasPrice = !service.quoteBased && service.price > 0;
-
-  const handlePay = () => {
-    if (isMobileDevice()) payNow(service.price, `Payment for ${service.title}`);
-    setPayOpen(true);
-  };
 
   return (
     <div className="min-h-screen bg-background pb-24 lg:pb-0">
@@ -139,11 +131,6 @@ function ServiceDetail() {
                 >
                   <MessageCircle /> Order now
                 </OrderNowButton>
-                {hasPrice && (
-                  <Button variant="gold" size="lg" onClick={handlePay}>
-                    <CreditCard /> Pay now
-                  </Button>
-                )}
                 {!hasPrice && (
                   <Button variant="gold" size="lg" onClick={() => setQuoteOpen(true)}>
                     <FileText /> Request a quote
@@ -182,11 +169,7 @@ function ServiceDetail() {
               {hasPrice ? `₹${service.price.toLocaleString("en-IN")}` : "Custom quote"}
             </p>
           </div>
-          {hasPrice ? (
-            <Button variant="gold" size="sm" onClick={handlePay}>
-              Pay now
-            </Button>
-          ) : (
+          {!hasPrice && (
             <Button variant="gold" size="sm" onClick={() => setQuoteOpen(true)}>
               Get quote
             </Button>
@@ -203,13 +186,6 @@ function ServiceDetail() {
         </div>
       </div>
 
-      <PaymentModal
-        open={payOpen}
-        onOpenChange={setPayOpen}
-        amount={service.price}
-        serviceName={service.title}
-        category={service.category}
-      />
       <QuoteDialog
         open={quoteOpen}
         onOpenChange={setQuoteOpen}
