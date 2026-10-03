@@ -85,19 +85,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, secure payments, real reviews.",
+          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, real reviews.",
       },
       { name: "author", content: "BookYourService" },
       { property: "og:title", content: "BookYourService — Book Verified Home Services in Bengaluru" },
       {
         property: "og:description",
         content:
-          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, secure payments, real reviews.",
+          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, real reviews.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "BookYourService — Book Verified Home Services in Bengaluru" },
-      { name: "twitter:description", content: "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, secure payments, real reviews." },
+      { name: "twitter:description", content: "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, real reviews." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/488e9b05-3824-4857-b608-4bbb12a66815/id-preview-fb37f106--d7c4cc2a-7947-45bd-8da3-4eb7021d2aba.lovable.app-1785431749465.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/488e9b05-3824-4857-b608-4bbb12a66815/id-preview-fb37f106--d7c4cc2a-7947-45bd-8da3-4eb7021d2aba.lovable.app-1785431749465.png" },
     ],
