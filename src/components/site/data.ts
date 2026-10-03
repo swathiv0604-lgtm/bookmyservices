@@ -282,7 +282,7 @@ export const testimonials = [
     name: "Vikram Shetty",
     area: "HSR Layout, Bengaluru",
     quote:
-      "The AC technician was verified, carried ID, and explained the gas top-up before charging. Payment and warranty details were all in the app.",
+      "The AC technician was verified, carried ID, and explained the gas top-up before charging. The warranty details were shared with me right after the visit.",
     rating: 5,
   },
   {
@@ -308,8 +308,8 @@ export const faqs = [
     a: "You can reschedule or cancel from your booking timeline. Free cancellation windows are shown on each service, and refunds follow the published refund policy.",
   },
   {
-    q: "Which payment methods are supported?",
-    a: "UPI, cards, netbanking, wallets, and cash on service where the provider allows it. Receipts and invoices are stored in your payment history.",
+    q: "How do I pay for a service?",
+    a: "There is no advance payment on BookYourService. You pay the professional directly after the work is completed to your satisfaction.",
   },
 ];
 
