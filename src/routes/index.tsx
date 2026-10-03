@@ -40,13 +40,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, secure payments, real reviews.",
+          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, real reviews.",
       },
       { property: "og:title", content: "BookYourService — Book Verified Home Services in Bengaluru" },
       {
         property: "og:description",
         content:
-          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, secure payments, real reviews.",
+          "Discover, compare and book verified local professionals for cleaning, repairs, salon, painting and more. Transparent pricing, real reviews.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
